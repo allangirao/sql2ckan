@@ -1,0 +1,31 @@
+version: '3'
+services:
+   db-mysql:
+    #build:
+    #  context: ./images
+    #  dockerfile: Mysql
+    image: mariadb:10.4
+    environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_USER: ckan
+       MYSQL_PASSWORD: ckan
+       MYSQL_DATABASE: ckan
+    volumes:
+      - source-mysql:/var/lib/mysql
+      - ./init_db/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "8001:3306"
+#   db-oracle:
+#    image: oraclelinux:8.0
+#   db-mssql:
+#    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+#   db-pgsql:
+#    image: postgres:12.0
+#   ckan:
+#   ckan-db:        
+volumes:
+  source-mysql:
+#  source-oracle:
+#  source-mssql:
+#  source-pgsql:        
+
