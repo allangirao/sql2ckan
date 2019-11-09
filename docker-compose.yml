@@ -12,8 +12,23 @@ services:
       - ./init_db/mysql:/docker-entrypoint-initdb.d
     ports:
       - "8001:3306"
-#   db-oracle:
-#    image: oraclelinux:8.0
+  db-oracle:
+# to build this image:
+# 1. Clone this repo: https://github.com/oracle/docker-images/
+# 2. Inside downloaded repo, go to OracleDatabase/SingleInstance
+# 3. Follow the instructions on README.md. Summarizing:
+# 3.1 Download version 19.3.0 from 'Oracle Technology Network' link given;
+# 3.2 Copy downloaded file to OracleDatabase/SingleInstance/dockerfiles/19.3.0
+# 3.3 In OracleDatabase/SingleInstance, ruin the following command: ./buildDockerImage.sh -v 19.3.0 -s
+#https://download.oracle.com/otn/linux/oracle19c/190000/LINUX.X64_193000_db_home.zip
+    image: oracle/database:19.3.0-se2
+    environment:
+      ORACLE_SID: ckan
+    volumes:
+      - source-oracle:/opt/oracle/oradata
+      - ./init_db/oracle:/docker-entrypoint-initdb.d/setup
+    ports:
+      - "8003:1521"
 #   db-mssql:
 #    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
   db-pgsql:
@@ -31,7 +46,7 @@ services:
 #   ckan-db:        
 volumes:
   source-mysql:
-#  source-oracle:
+  source-oracle:
 #  source-mssql:
   source-pgsql:        
 
