@@ -1,9 +1,6 @@
 version: '3'
 services:
-   db-mysql:
-    #build:
-    #  context: ./images
-    #  dockerfile: Mysql
+  db-mysql:
     image: mariadb:10.4
     environment:
        MYSQL_ROOT_PASSWORD: root
@@ -19,13 +16,22 @@ services:
 #    image: oraclelinux:8.0
 #   db-mssql:
 #    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
-#   db-pgsql:
-#    image: postgres:12.0
+  db-pgsql:
+    image: postgres:12.0
+    environment:
+     POSTGRES_USER: ckan
+     POSTGRES_PASSWORD: ckan
+     POSTGRES_DB: ckan
+    volumes:
+      - source-pgsql:/var/lib/postgresql/data
+      - ./init_db/pgsql:/docker-entrypoint-initdb.d
+    ports:
+      - "8002:5432"
 #   ckan:
 #   ckan-db:        
 volumes:
   source-mysql:
 #  source-oracle:
 #  source-mssql:
-#  source-pgsql:        
+  source-pgsql:        
 
