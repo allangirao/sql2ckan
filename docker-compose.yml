@@ -3,10 +3,10 @@ services:
   db-mysql:
     image: mariadb:10.4
     environment:
-       MYSQL_ROOT_PASSWORD: root
-       MYSQL_USER: ckan
-       MYSQL_PASSWORD: ckan
-       MYSQL_DATABASE: ckan
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ckan
+      MYSQL_PASSWORD: ckan
+      MYSQL_DATABASE: ckan
     volumes:
       - source-mysql:/var/lib/mysql
       - ./init_db/mysql:/docker-entrypoint-initdb.d
@@ -29,14 +29,23 @@ services:
       - ./init_db/oracle:/docker-entrypoint-initdb.d/setup
     ports:
       - "8003:1521"
-#   db-mssql:
-#    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+  db-mssql:
+    build:
+      context: ./dockerfiles/mssql
+    environment:
+      SA_PASSWORD: Ckan1234
+      ACCEPT_EULA: Y
+    ports:
+      - "8004:1433"
+    volumes:
+      - source-mssql:/var/opt/mssql/data
+      - ./init_db/mssql:/docker-entrypoint-initdb.d/
   db-pgsql:
     image: postgres:12.0
     environment:
-     POSTGRES_USER: ckan
-     POSTGRES_PASSWORD: ckan
-     POSTGRES_DB: ckan
+      POSTGRES_USER: ckan
+      POSTGRES_PASSWORD: ckan
+      POSTGRES_DB: ckan
     volumes:
       - source-pgsql:/var/lib/postgresql/data
       - ./init_db/pgsql:/docker-entrypoint-initdb.d
@@ -47,6 +56,6 @@ services:
 volumes:
   source-mysql:
   source-oracle:
-#  source-mssql:
+  source-mssql:
   source-pgsql:        
 
